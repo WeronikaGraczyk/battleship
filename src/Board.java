@@ -30,7 +30,7 @@ public class Board {
         tablica[1][0] = "A";
         tablica[2][0] = "B";
         tablica[3][0] = "C";
-        tablica[4][0] = "F";
+        tablica[4][0] = "D";
         tablica[5][0] = "E";
         tablica[6][0] = "F";
         tablica[7][0] = "G";
@@ -40,29 +40,95 @@ public class Board {
     }
 
     public void addShip(int length, String first, String second) {
-        int startX=whatsSecondNumber(first);
-        int startY=whatsFirstNumber(first);
-        int endX=whatsSecondNumber(second);
-        int endY=whatsFirstNumber(second);
-        if(length==endX-startX+1 && startY==endY){
-            for (int i=startX;i<=endX;i++){
-                tablica[startY][i]=ship;
+        int startX = whatsSecondNumber(first);
+        int startY = whatsFirstNumber(first);
+        int endX = whatsSecondNumber(second);
+        int endY = whatsFirstNumber(second);
+        if (checkOtherShips(length, first, second)) {
+            if (length == endX - startX + 1 && startY == endY) {
+                for (int i = startX; i <= endX; i++) {
+                    tablica[startY][i] = ship;
+                }
+            } else if (length == endY - startY + 1 && startX == endX) {
+                for (int i = startY; i <= endY; i++) {
+                    tablica[i][startX] = ship;
+                }
+            } else {
+                System.out.println("Wrong cordinats! ");
             }
-        }else if(length==endY-startY+1 && startX==endX){
-            for (int i=startY;i<=endY;i++){
-                tablica[i][startY]=ship;
-            }
-        }else {
-            System.out.println("Wrong cordinats! ");
+        } else {
+            System.out.println("Wrong! The ship is too close to another ship ");
         }
     }
 
-    public int whatsFirstNumber(String place) {
+    private boolean checkOtherShips(int length, String first, String second) {
+        int startX = whatsSecondNumber(first);
+        int startY = whatsFirstNumber(first);
+        int endX = whatsSecondNumber(second);
+        int endY = whatsFirstNumber(second);
+        boolean result = true;
+        if (length == endX - startX + 1 && startY == endY) {
+            if (startX == 1) {
+                startX++;
+            }
+            if (endX == 10) {
+                endX--;
+            }
+            if (startY == 1) {
+                for (int i = startX - 1; i <= endX + 1; i++) {
+                    if (tablica[startY][i].equals(ship) || tablica[startY + 1][i].equals(ship)) {
+                        result = false;
+                    }
+                }
+            } else if (endY == 10) {
+                for (int i = startX - 1; i <= endX + 1; i++) {
+                    if (tablica[startY][i].equals(ship) || tablica[startY - 1][i].equals(ship)) {
+                        result = false;
+                    }
+                }
+            } else {
+                for (int i = startX - 1; i <= endX + 1; i++) {
+                    if (tablica[startY][i].equals(ship) || tablica[startY - 1][i].equals(ship) || tablica[startY + 1][i].equals(ship)) {
+                        result = false;
+                    }
+                }
+            }
+        } else if (length == endY - startY + 1 && startX == endX) {
+            if (startY == 1) {
+                startY++;
+            }
+            if (endY == 10) {
+                endY--;
+            }
+            if (startX == 1) {
+                for (int i = startY - 1; i <= endY + 1; i++) {
+                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship)) {
+                        result = false;
+                    }
+                }
+            } else if (endX == 10) {
+                for (int i = startY - 1; i <= endY + 1; i++) {
+                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship)) {
+                        result = false;
+                    }
+                }
+            } else {
+                for (int i = startY - 1; i <= endY + 1; i++) {
+                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship) || tablica[i][startX - 1].equals(ship)) {
+                        result = false;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private int whatsFirstNumber(String place) {
         String i = place.substring(0);
         return i.charAt(0) - 64;
     }
 
-    public int whatsSecondNumber(String place) {
+    private int whatsSecondNumber(String place) {
         String j = place.substring(1);
         return Integer.parseInt(j);
     }
