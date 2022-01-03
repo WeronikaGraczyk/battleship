@@ -8,8 +8,7 @@ public class Point {
     }
 
     private int whatsFirstNumber(String place) {
-        String i = place.substring(0);
-        return i.charAt(0) - 64;
+        return place.charAt(0) - 64;
     }
 
     private int whatsSecondNumber(String place) {
