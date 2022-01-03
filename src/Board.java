@@ -1,9 +1,6 @@
 public class Board {
     private String tablica[][];
-    private static String ship = "o";
-    private static String hit = "x";
-    private static String miss = "M";
-    private static String WATER = "~";
+    public int numberOfShips = 0;
 
     class Error {
         private static final String COORDINATES = "Wrong coordinates";
@@ -13,7 +10,7 @@ public class Board {
         this.tablica = new String[11][11];
         for (int i = 1; i < tablica.length; i++) {
             for (int j = 1; j < tablica[i].length; j++) {
-                tablica[i][j] = WATER;
+                tablica[i][j] = constValue.WATER;
             }
         }
         tablica[0][0] = " ";
@@ -39,20 +36,22 @@ public class Board {
         tablica[10][0] = "J";
     }
 
-    public void addShip(int length, String first, String second) {
-        int startX = whatsSecondNumber(first);
-        int startY = whatsFirstNumber(first);
-        int endX = whatsSecondNumber(second);
-        int endY = whatsFirstNumber(second);
+    public void addShip(int length, Point first, Point second) {
+        int startX = first.getX();
+        int startY = first.getY();
+        int endX = second.getX();
+        int endY = second.getY();
         if (checkOtherShips(length, first, second)) {
             if (length == endX - startX + 1 && startY == endY) {
                 for (int i = startX; i <= endX; i++) {
-                    tablica[startY][i] = ship;
+                    tablica[startY][i] = constValue.SHIP;
                 }
+                numberOfShips += length;
             } else if (length == endY - startY + 1 && startX == endX) {
                 for (int i = startY; i <= endY; i++) {
-                    tablica[i][startX] = ship;
+                    tablica[i][startX] = constValue.SHIP;
                 }
+                numberOfShips += length;
             } else {
                 System.out.println("Wrong cordinats! ");
             }
@@ -61,11 +60,23 @@ public class Board {
         }
     }
 
-    private boolean checkOtherShips(int length, String first, String second) {
-        int startX = whatsSecondNumber(first);
-        int startY = whatsFirstNumber(first);
-        int endX = whatsSecondNumber(second);
-        int endY = whatsFirstNumber(second);
+    public void play(Point point) {
+        int pointX = point.getX();
+        int pointY = point.getY();
+        if(tablica[pointY][pointX]== constValue.SHIP){
+            tablica[pointY][pointX]= constValue.HIT;
+        }else if (tablica[pointY][pointX]== constValue.WATER){
+            tablica[pointY][pointX]= constValue.MISS;
+        }
+
+
+    }
+
+    private boolean checkOtherShips(int length, Point first, Point second) {
+        int startX = first.getX();
+        int startY = first.getY();
+        int endX = second.getX();
+        int endY = second.getY();
         boolean result = true;
         if (length == endX - startX + 1 && startY == endY) {
             if (startX == 1) {
@@ -76,19 +87,19 @@ public class Board {
             }
             if (startY == 1) {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(ship) || tablica[startY + 1][i].equals(ship)) {
+                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else if (endY == 10) {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(ship) || tablica[startY - 1][i].equals(ship)) {
+                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY - 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(ship) || tablica[startY - 1][i].equals(ship) || tablica[startY + 1][i].equals(ship)) {
+                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY - 1][i].equals(constValue.SHIP) || tablica[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
@@ -102,19 +113,19 @@ public class Board {
             }
             if (startX == 1) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship)) {
+                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else if (endX == 10) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship)) {
+                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(ship) || tablica[i][startX + 1].equals(ship) || tablica[i][startX - 1].equals(ship)) {
+                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP) || tablica[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
@@ -123,15 +134,6 @@ public class Board {
         return result;
     }
 
-    private int whatsFirstNumber(String place) {
-        String i = place.substring(0);
-        return i.charAt(0) - 64;
-    }
-
-    private int whatsSecondNumber(String place) {
-        String j = place.substring(1);
-        return Integer.parseInt(j);
-    }
 
     public void view() {
         for (int i = 0; i < tablica.length; i++) {
@@ -140,46 +142,5 @@ public class Board {
             }
             System.out.println();
         }
-    }
-
-    public void bl() {
-//        int startRow = whatsFisrtNumber(first);
-//        int start = whatsSecondNumber(first);
-//        int endRow = whatsFisrtNumber(second);
-//        int end = whatsSecondNumber(second);
-//        if (checkCoordinates(length, first, second)) {
-//            if (length == end - start + 1 && startRow == endRow) {
-//                for (int i = start; i <= end; i++) {
-//                    tablica[start][i] = ship;
-//                }
-//
-//            } else if (length == endRow - startRow + 1 && start == end) {
-//                for (int i = startRow; i <= endRow; i++) {
-//                    tablica[i][startRow] = ship;
-//                }
-//            }
-//            else {
-//                System.out.println("Error! Wrong length! Try again: ");
-//            }
-//        } else {
-//            System.out.println("Error! You placed it too close to another one. Try again:");
-//        }
-//        int startY = whatsFisrtNumber(first);
-//        int startX = whatsSecondNumber(first);
-//        int endY = whatsFisrtNumber(second);
-//        int endX = whatsSecondNumber(second);
-//        if(checkCoordinates(length,first,second)){
-//            if (length == endX - startX + 1 && endY == startY) {
-//                for (int i = startX; i <= endX; i++) {
-//                    tablica[startX][i] = ship;
-//                }
-//            } else if (length == endY - startY + 1 && endX == startX) {
-//                for (int i = startY; i <= endY; i++) {
-//                    tablica[i][startY] = ship;
-//                }
-//            }else {
-//                System.out.println("Error! Wrong length! Try again: ");
-//            }
-//        }
     }
 }
