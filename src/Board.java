@@ -1,14 +1,14 @@
+import java.util.Arrays;
+
 public class Board {
-    private String board[][];
-    private String ABC[]={"A","B","C","D","E","F","G","H","I","J"};
+    private final String[][] board;
+    private final String[] ABC = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
     public int numberOfShips = 0;
 
     public Board() {
         this.board = new String[10][10];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = constValue.WATER;
-            }
+        for (String[] strings : board) {
+            Arrays.fill(strings, constValue.WATER);
         }
     }
 
@@ -21,7 +21,6 @@ public class Board {
             if (length == endX - startX + 1 && startY == endY) {
                 for (int i = startX; i <= endX; i++) {
                     board[startY][i] = constValue.SHIP;
-
                 }
                 numberOfShips += length;
                 return true;
@@ -43,14 +42,12 @@ public class Board {
     public void play(Point point) {
         int pointX = point.getX();
         int pointY = point.getY();
-        if(board[pointY][pointX]== constValue.SHIP){
-            board[pointY][pointX]= constValue.HIT;
+        if (board[pointY][pointX].equals(constValue.SHIP)) {
+            board[pointY][pointX] = constValue.HIT;
             numberOfShips--;
-        }else if (board[pointY][pointX]== constValue.WATER){
-            board[pointY][pointX]= constValue.MISS;
+        } else if (board[pointY][pointX].equals(constValue.WATER)) {
+            board[pointY][pointX] = constValue.MISS;
         }
-
-
     }
 
     private boolean checkOtherShips(int length, Point first, Point second) {
@@ -70,18 +67,21 @@ public class Board {
                 for (int i = startX - 1; i <= endX + 1; i++) {
                     if (board[startY][i].equals(constValue.SHIP) || board[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             } else if (endY == 9) {
                 for (int i = startX - 1; i <= endX + 1; i++) {
                     if (board[startY][i].equals(constValue.SHIP) || board[startY - 1][i].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             } else {
                 for (int i = startX - 1; i <= endX + 1; i++) {
                     if (board[startY][i].equals(constValue.SHIP) || board[startY - 1][i].equals(constValue.SHIP) || board[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             }
@@ -96,18 +96,21 @@ public class Board {
                 for (int i = startY - 1; i <= endY + 1; i++) {
                     if (board[i][startX].equals(constValue.SHIP) || board[i][startX + 1].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             } else if (endX == 9) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
                     if (board[i][startX].equals(constValue.SHIP) || board[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             } else {
                 for (int i = startY - 1; i <= endY + 1; i++) {
                     if (board[i][startX].equals(constValue.SHIP) || board[i][startX + 1].equals(constValue.SHIP) || board[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
+                        break;
                     }
                 }
             }
@@ -121,12 +124,12 @@ public class Board {
 
     public void view() {
         System.out.print("  ");
-        for (int i=1;i<=10;i++){
-            System.out.print(i+" ");
+        for (int i = 1; i <= 10; i++) {
+            System.out.print(i + " ");
         }
         System.out.println();
         for (int i = 0; i < board.length; i++) {
-            System.out.print(ABC[i]+" ");
+            System.out.print(ABC[i] + " ");
             for (int j = 0; j < board[i].length; j++) {
                 System.out.print(board[i][j] + " ");
             }
