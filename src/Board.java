@@ -2,10 +2,6 @@ public class Board {
     private String tablica[][];
     public int numberOfShips = 0;
 
-    class Error {
-        private static final String COORDINATES = "Wrong coordinates";
-    }
-
     public Board() {
         this.tablica = new String[11][11];
         for (int i = 1; i < tablica.length; i++) {
@@ -36,7 +32,7 @@ public class Board {
         tablica[10][0] = "J";
     }
 
-    public void addShip(int length, Point first, Point second) {
+    public boolean addShip(int length, Point first, Point second) {
         int startX = first.getX();
         int startY = first.getY();
         int endX = second.getX();
@@ -45,19 +41,23 @@ public class Board {
             if (length == endX - startX + 1 && startY == endY) {
                 for (int i = startX; i <= endX; i++) {
                     tablica[startY][i] = constValue.SHIP;
+
                 }
                 numberOfShips += length;
+                return true;
             } else if (length == endY - startY + 1 && startX == endX) {
                 for (int i = startY; i <= endY; i++) {
                     tablica[i][startX] = constValue.SHIP;
                 }
                 numberOfShips += length;
+                return true;
             } else {
                 System.out.println("Wrong cordinats! ");
             }
         } else {
             System.out.println("Wrong! The ship is too close to another ship ");
         }
+        return false;
     }
 
     public void play(Point point) {
@@ -65,6 +65,7 @@ public class Board {
         int pointY = point.getY();
         if(tablica[pointY][pointX]== constValue.SHIP){
             tablica[pointY][pointX]= constValue.HIT;
+            numberOfShips--;
         }else if (tablica[pointY][pointX]== constValue.WATER){
             tablica[pointY][pointX]= constValue.MISS;
         }
@@ -119,7 +120,7 @@ public class Board {
                 }
             } else if (endX == 10) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP)) {
+                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
@@ -134,6 +135,9 @@ public class Board {
         return result;
     }
 
+    public int getNumberOfShips() {
+        return numberOfShips;
+    }
 
     public void view() {
         for (int i = 0; i < tablica.length; i++) {
@@ -143,4 +147,5 @@ public class Board {
             System.out.println();
         }
     }
+
 }
