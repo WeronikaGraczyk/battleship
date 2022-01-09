@@ -1,35 +1,15 @@
 public class Board {
-    private String tablica[][];
+    private String board[][];
+    private String ABC[]={"A","B","C","D","E","F","G","H","I","J"};
     public int numberOfShips = 0;
 
     public Board() {
-        this.tablica = new String[11][11];
-        for (int i = 1; i < tablica.length; i++) {
-            for (int j = 1; j < tablica[i].length; j++) {
-                tablica[i][j] = constValue.WATER;
+        this.board = new String[10][10];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = constValue.WATER;
             }
         }
-        tablica[0][0] = " ";
-        tablica[0][1] = "1";
-        tablica[0][2] = "2";
-        tablica[0][3] = "3";
-        tablica[0][4] = "4";
-        tablica[0][5] = "5";
-        tablica[0][6] = "6";
-        tablica[0][7] = "7";
-        tablica[0][8] = "8";
-        tablica[0][9] = "9";
-        tablica[0][10] = "10";
-        tablica[1][0] = "A";
-        tablica[2][0] = "B";
-        tablica[3][0] = "C";
-        tablica[4][0] = "D";
-        tablica[5][0] = "E";
-        tablica[6][0] = "F";
-        tablica[7][0] = "G";
-        tablica[8][0] = "H";
-        tablica[9][0] = "I";
-        tablica[10][0] = "J";
     }
 
     public boolean addShip(int length, Point first, Point second) {
@@ -40,14 +20,14 @@ public class Board {
         if (checkOtherShips(length, first, second)) {
             if (length == endX - startX + 1 && startY == endY) {
                 for (int i = startX; i <= endX; i++) {
-                    tablica[startY][i] = constValue.SHIP;
+                    board[startY][i] = constValue.SHIP;
 
                 }
                 numberOfShips += length;
                 return true;
             } else if (length == endY - startY + 1 && startX == endX) {
                 for (int i = startY; i <= endY; i++) {
-                    tablica[i][startX] = constValue.SHIP;
+                    board[i][startX] = constValue.SHIP;
                 }
                 numberOfShips += length;
                 return true;
@@ -63,11 +43,11 @@ public class Board {
     public void play(Point point) {
         int pointX = point.getX();
         int pointY = point.getY();
-        if(tablica[pointY][pointX]== constValue.SHIP){
-            tablica[pointY][pointX]= constValue.HIT;
+        if(board[pointY][pointX]== constValue.SHIP){
+            board[pointY][pointX]= constValue.HIT;
             numberOfShips--;
-        }else if (tablica[pointY][pointX]== constValue.WATER){
-            tablica[pointY][pointX]= constValue.MISS;
+        }else if (board[pointY][pointX]== constValue.WATER){
+            board[pointY][pointX]= constValue.MISS;
         }
 
 
@@ -80,53 +60,53 @@ public class Board {
         int endY = second.getY();
         boolean result = true;
         if (length == endX - startX + 1 && startY == endY) {
-            if (startX == 1) {
+            if (startX == 0) {
                 startX++;
             }
-            if (endX == 10) {
+            if (endX == 9) {
                 endX--;
             }
-            if (startY == 1) {
+            if (startY == 0) {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY + 1][i].equals(constValue.SHIP)) {
+                    if (board[startY][i].equals(constValue.SHIP) || board[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
-            } else if (endY == 10) {
+            } else if (endY == 9) {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY - 1][i].equals(constValue.SHIP)) {
+                    if (board[startY][i].equals(constValue.SHIP) || board[startY - 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else {
                 for (int i = startX - 1; i <= endX + 1; i++) {
-                    if (tablica[startY][i].equals(constValue.SHIP) || tablica[startY - 1][i].equals(constValue.SHIP) || tablica[startY + 1][i].equals(constValue.SHIP)) {
+                    if (board[startY][i].equals(constValue.SHIP) || board[startY - 1][i].equals(constValue.SHIP) || board[startY + 1][i].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             }
         } else if (length == endY - startY + 1 && startX == endX) {
-            if (startY == 1) {
+            if (startY == 0) {
                 startY++;
             }
-            if (endY == 10) {
+            if (endY == 9) {
                 endY--;
             }
-            if (startX == 1) {
+            if (startX == 0) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP)) {
+                    if (board[i][startX].equals(constValue.SHIP) || board[i][startX + 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
-            } else if (endX == 10) {
+            } else if (endX == 9) {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX - 1].equals(constValue.SHIP)) {
+                    if (board[i][startX].equals(constValue.SHIP) || board[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
             } else {
                 for (int i = startY - 1; i <= endY + 1; i++) {
-                    if (tablica[i][startX].equals(constValue.SHIP) || tablica[i][startX + 1].equals(constValue.SHIP) || tablica[i][startX - 1].equals(constValue.SHIP)) {
+                    if (board[i][startX].equals(constValue.SHIP) || board[i][startX + 1].equals(constValue.SHIP) || board[i][startX - 1].equals(constValue.SHIP)) {
                         result = false;
                     }
                 }
@@ -140,9 +120,15 @@ public class Board {
     }
 
     public void view() {
-        for (int i = 0; i < tablica.length; i++) {
-            for (int j = 0; j < tablica[i].length; j++) {
-                System.out.print(tablica[i][j] + " ");
+        System.out.print("  ");
+        for (int i=1;i<=10;i++){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        for (int i = 0; i < board.length; i++) {
+            System.out.print(ABC[i]+" ");
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }

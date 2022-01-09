@@ -8,12 +8,12 @@ public class Point {
     }
 
     private int whatsFirstNumber(String place) {
-        return place.charAt(0) - 64;
+        return (place.charAt(0) - 64)-1;
     }
 
     private int whatsSecondNumber(String place) {
         String j = place.substring(1);
-        return Integer.parseInt(j);
+        return (Integer.parseInt(j))-1;
     }
 
     public int getX() {
